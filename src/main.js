@@ -20,7 +20,8 @@ function handleSubmit(event) {
     if (!search_word) {
         iziToast.error({
             message: "Please enter a keyword into the search field",
-            position: "topRight"
+            position: "topRight",
+            timeout: 1500
         });
         return;
     }
@@ -34,7 +35,8 @@ function handleSubmit(event) {
             if (images_arr.length === 0) {
                 iziToast.error({
                 message: `"Sorry, there are no images matching your search query. Please try again!"`,
-                    position: "topRight"
+                    position: "topRight",
+                    timeout: 1500
                 })
             } else {
                 const gallery_markup = generateMarkup(data.hits);
@@ -44,7 +46,8 @@ function handleSubmit(event) {
         .catch(error => {
             iziToast.error({
                 message: error.message,
-                position: "topRight"
+                position: "topRight",
+                timeout: 5000
             });
         })
         .finally(() => { 
@@ -53,17 +56,3 @@ function handleSubmit(event) {
             event.target.elements.search.value = '';
         })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
