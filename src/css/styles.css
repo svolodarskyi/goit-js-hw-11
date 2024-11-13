@@ -28,7 +28,7 @@ img {
             
 }
 
-.input-container {
+.searching-form {
     display: flex;
     justify-content: center;
     gap: 8px
