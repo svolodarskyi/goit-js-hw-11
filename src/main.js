@@ -3,28 +3,38 @@ import fetchData from "./js/pixabay-api";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-const input = document.querySelector(".search-field");
+const form = document.querySelector(".searching-form");
 const button = document.querySelector("button");
 const galleryContainer = document.querySelector('.gallery');
 const loaderIconContainer = document.querySelector('.loader-icon-container')
 
-button.addEventListener("click", handleClick);
+form.addEventListener("submit", handleSubmit);
 
 
-function handleClick(event) {
+function handleSubmit(event) {
     event.preventDefault();
     //reset gallery
     galleryContainer.innerHTML = '';
+    
+    const search_word = event.target.elements.search.value.trim();
+    if (!search_word) {
+        iziToast.error({
+            message: "Please enter a keyword into the search field",
+            position: "topRight"
+        });
+        return;
+    }
+
     loaderIconContainer.classList.toggle('loader');
-    const search_word = input.value.trim();
 
     fetchData(search_word)
         .then((data) => {
+            console.log('asda')
             const images_arr = data.hits;
-            if (images_arr === 0) {
+            if (images_arr.length === 0) {
                 iziToast.error({
                 message: `"Sorry, there are no images matching your search query. Please try again!"`,
-            position: "topRight"
+                    position: "topRight"
                 })
             } else {
                 const gallery_markup = generateMarkup(data.hits);
@@ -38,8 +48,9 @@ function handleClick(event) {
             });
         })
         .finally(() => { 
+            
             loaderIconContainer.classList.toggle('loader');
-            input.value = '';
+            event.target.elements.search.value = '';
         })
 }
 
